@@ -16,9 +16,6 @@ if ~exist('appName','var')
 end
 rootdir = filesepStandard(fileparts(which(appName)));
 
-if ~exist('inclList','var')
-    inclList = {};
-end
 if ~exist('exclList','var')
     exclList = {};
 end
@@ -40,10 +37,9 @@ sanity = 100;
 while ~ispathvalid(appDotMFilesStr, 'file')
     
     appDotMFileMain = sprintf('%s.m', appName);
-    targetName = filesepStandard(sprintf('.%s%s.exe', filesep, appName), 'nameonly');
     
     % Check to make sure main .m file exists
-    if ~ispathvalid(['./', appDotMFileMain], 'file') && ~ispathvalid(['../', appDotMFileMain], 'file')
+    if ~ispathvalid([rootdir, appDotMFileMain], 'file')
         q = menu(sprintf('Could not find the main application file %s.m. Please locate the main application file.', appName), 'OK');
         [filenm, pathnm] = uigetfile({'*.m'}, 'Select main .m file');
         if filenm==0
@@ -65,15 +61,12 @@ end
 appDotMFilesStr = sprintf('-v %s', appDotMFileMain');
 
 % Get all .m files which will go into making the app executable
-appDotMFiles = findDotMFiles('.', exclList);
-for ii = 1:length(inclList)
-    appDotMFiles = [appDotMFiles, findDotMFiles(inclList{ii}, exclList)];
-end
+appDotMFiles = findDotMFiles(rootdir, exclList);
 
 % Create compile switches string
 compileSwitches = '';
 for ii = 1:length(flags)
-    compileSwitches = [compileSwitches, flags{ii}, ' '];
+    compileSwitches = [compileSwitches, flags{ii}, ' ']; %#ok<*AGROW>
 end
 compileSwitches = [compileSwitches, ' -w enable:specified_file_mismatch'];
 compileSwitches = [compileSwitches, ' -w enable:repeated_file'];
