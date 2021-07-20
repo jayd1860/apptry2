@@ -3,6 +3,11 @@ global namespace
 
 fprintf('In context:\n');
 
+if isdeployed()
+    c = namespace(1).name;
+    return;
+end
+
 c = '';
 s = dbstack();
 if isempty(s)
@@ -15,18 +20,31 @@ for jj = length(s):-1:1
     fprintf('  s(%d).name = %s:\n', jj, s(jj).name);
 
     try
-        [~,p] = fileparts(fileparts(filesepStandard(which(s(jj).file))));
+        pname = filesepStandard(which(s(jj).file));
     catch
         continue
     end
     for ii = 1:length(namespace)
-        fprintf('  namespace{%d} = %s:\n', ii, namespace{ii});
-        if ~isempty(find(strcmp(p, namespace{ii})))
-            c = namespace{ii};
+        fprintf('  namespace = [%s, %s]\n', namespace(ii).name, namespace(ii).pname);
+        if isRootpathsSame(pname, namespace(ii).pname)
+            c = namespace(ii).name;
             return;
         end
     end
     fprintf('\n');
 end
+
+
+
+% ---------------------------------------------------------
+function b = isRootpathsSame(p1, p2)
+b = false;
+p1 = filesepStandard(p1);
+p2 = filesepStandard(p2);
+k = findstr(p1, p2);
+if isempty(k)
+    return;
+end
+b = true;
 
 
