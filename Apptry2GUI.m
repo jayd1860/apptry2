@@ -42,7 +42,6 @@ function editID_Callback(hObject, eventdata, handles)
 % --------------------------------------------------------------------
 function figure1_CloseRequestFcn(hObject, eventdata, handles)
 delete(hObject);
-deleteNamespace('Apptry2GUI');
 
 
 % --------------------------------------------------------------------
