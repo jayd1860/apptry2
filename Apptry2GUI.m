@@ -37,7 +37,7 @@ set(handles.editID, 'string', num2str(func21(16)));
 
 % --------------------------------------------------------------------
 function editID_Callback(hObject, eventdata, handles)
-
+x = 7;
 
 % --------------------------------------------------------------------
 function figure1_CloseRequestFcn(hObject, eventdata, handles)
