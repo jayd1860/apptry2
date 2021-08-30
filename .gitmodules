@@ -1,8 +1,0 @@
-[submodule "test2"]
-	path = test2
-	url = https://github.com/jayd1860/test2
-	branch = master
-[submodule "test3"]
-	path = test3
-	url = https://github.com/jayd1860/test3
-	branch = main
